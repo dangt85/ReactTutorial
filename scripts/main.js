@@ -53,12 +53,22 @@ var App = React.createClass({
 		this.state.order[key] = this.state.order[key] + 1 || 1;
 		this.setState({ order : this.state.order });
 	},
+	removeFromOrder: function(key) {
+		delete this.state.order[key];
+		this.setState({ order: this.state.order });
+	},
 	addFish: function(fish) {
 		var ts = (new Date()).getTime();
 		// update the state object
 		this.state.fishes['fish-'+ts] = fish;
 		// set the state
 		this.setState({ fishes: this.state.fishes });
+	},
+	removeFish: function(key) {
+		if(confirm('Are you sure?')) {
+			this.state.fishes[key] = null;
+			this.setState({ fishes: this.state.fishes });
+		}
 	},
 	loadSamples : function() {
 		this.setState({
@@ -79,8 +89,11 @@ var App = React.createClass({
 						{Object.keys(this.state.fishes).map(this.renderFish)}
 					</ul>
 				</div>
-				<Order fishes={this.state.fishes} order={this.state.order}></Order>
-				<Inventory addFish={this.addFish} loadSamples={this.loadSamples} fishes={this.state.fishes} linkState={this.linkState}></Inventory>
+				<Order fishes={this.state.fishes} order={this.state.order}
+					removeFromOrder={this.removeFromOrder}></Order>
+				<Inventory addFish={this.addFish} loadSamples={this.loadSamples} 
+					fishes={this.state.fishes} linkState={this.linkState}
+					removeFish={this.removeFish}></Inventory>
 			</div>
 		)
 	}
@@ -177,9 +190,10 @@ var Order = React.createClass({
 	renderOrder: function(key) {
 		var fish = this.props.fishes[key];
 		var count = this.props.order[key];
+		var removeBtn = <button onClick={this.props.removeFromOrder.bind(null, key)}>&times;</button>;
 
 		if(!fish) {
-			return <li key={key}>Sorry, fish no longer available!</li>
+			return <li key={key}>Sorry, fish no longer available! {removeBtn}</li>
 		}
 
 		return (
@@ -187,6 +201,7 @@ var Order = React.createClass({
 				{count} lbs
 				{fish.name}
 				<span className="price">{h.formatPrice(count * fish.price)}</span>
+				{removeBtn}
 			</li>
 		);
 	},
@@ -234,7 +249,7 @@ var Inventory = React.createClass({
 				</select>
 				<textarea type="text"  valueLink={linkState('fishes.'+key+'.desc')} placeholder="Desc"></textarea>
 				<input type="text"  valueLink={linkState('fishes.'+key+'.image')} placeholder="URL to Image" />
-				<button type="submit"> Remove fish </button>
+				<button onClick={this.props.removeFish.bind(null, key)}>Remove fish</button>
 			</div>
 		);
 	},
