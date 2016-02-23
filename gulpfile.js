@@ -25,13 +25,13 @@ gulp.task('styles',function() {
   // move over fonts
 
   gulp.src('css/fonts/**.*')
-    .pipe(gulp.dest('build/css/fonts'))
+    .pipe(gulp.dest('./public/css/fonts'))
 
   // Compiles CSS
   gulp.src('css/style.styl')
     .pipe(stylus())
     .pipe(autoprefixer())
-    .pipe(gulp.dest('./build/css/'))
+    .pipe(gulp.dest('./public/css/'))
     .pipe(reload({stream:true}))
 });
 
@@ -40,7 +40,7 @@ gulp.task('styles',function() {
 */
 gulp.task('images',function(){
   gulp.src('css/images/**')
-    .pipe(gulp.dest('./build/css/images'))
+    .pipe(gulp.dest('./public/css/images'))
 });
 
 /*
@@ -49,7 +49,7 @@ gulp.task('images',function(){
 gulp.task('browser-sync', function() {
     browserSync({
         // we need to disable clicks and forms for when we test multiple rooms
-        server : {},
+        server : { baseDir: "./public" },
         middleware : [ historyApiFallback() ],
         ghostMode: false
     });
@@ -81,13 +81,13 @@ function buildScript(file, watch) {
     return stream
       .on('error', handleErrors)
       .pipe(source(file))
-      .pipe(gulp.dest('./build/'))
+      // .pipe(gulp.dest('./public/'))
       // If you also want to uglify it
-      // .pipe(buffer())
-      // .pipe(uglify())
-      // .pipe(rename('app.min.js'))
-      // .pipe(gulp.dest('./build'))
-      .pipe(reload({stream:true}))
+      .pipe(buffer())
+      .pipe(uglify())
+      .pipe(rename('main.min.js'))
+      .pipe(gulp.dest('./public/'))
+      .pipe(reload({stream:true}));
   }
 
   // listen for an update and run rebundle

@@ -10,7 +10,8 @@ import Catalyst from 'react-catalyst';
 
 // Firebase
 import Rebase from 're-base';
-var base = Rebase.createClass('https://dgreacttut.firebaseio.com/');
+import config from '../config';
+var base = Rebase.createClass(config.firebaseUrl);
 
 
 import Header from './Header';
@@ -100,7 +101,7 @@ class App extends React.Component {
 					removeFromOrder={this.removeFromOrder}></Order>
 				<Inventory addFish={this.addFish} loadSamples={this.loadSamples} 
 					fishes={this.state.fishes} linkState={this.linkState.bind(this)}
-					removeFish={this.removeFish}></Inventory>
+					removeFish={this.removeFish} {...this.props}></Inventory>
 			</div>
 		)
 	}
