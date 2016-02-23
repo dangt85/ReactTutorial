@@ -3,8 +3,8 @@ Header
 */
 import React from 'react';
 
-var Header = React.createClass({
-	render: function() {
+class Header extends React.Component {
+	render() {
 		return (
 			<header className="top">
 				<h1>Catch
@@ -16,11 +16,12 @@ var Header = React.createClass({
 				<h3><span>{this.props.tagline}</span></h3>
 			</header>
 		);
-	},
-	propTypes: {
-		tagline: React.PropTypes.string.isRequired,
-		num: React.PropTypes.number
 	}
-});
+}
+
+Header.propTypes = {
+	tagline: React.PropTypes.string.isRequired,
+	num: React.PropTypes.number
+}
 
 export default Header;
