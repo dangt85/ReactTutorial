@@ -3,12 +3,10 @@
 */
 import React from 'react';
 
-var NotFound = React.createClass({
-	render: function() {
-		return (
-			<p>Not Found!</p>
-		);
+class NotFound extends React.Component{
+	render() {
+		return <p>Not Found!</p>
 	}
-});
+}
 
 export default NotFound;
