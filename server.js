@@ -8,8 +8,11 @@ var port = process.env.PORT || 3000;
 // make express look in the public directory for assets (css/js/img)
 app.use(express.static(__dirname + '/public'));
 
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+
 // set the home page route
-app.all('*', function(req, res) {
+app.use(function(req, res) {
     res.render('index');
 });
 
